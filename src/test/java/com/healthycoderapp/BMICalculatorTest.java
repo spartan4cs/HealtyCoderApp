@@ -17,8 +17,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -47,9 +51,13 @@ class BMICalculatorTest {
 	}
 
 	@Nested
+	@DisplayName(" Nested class name")
 	class DietRecommended {
 		// test true value
 		@Test
+		@DisplayName("customized display name")
+//		/@Disabled
+		@DisabledOnOs(OS.LINUX)
 		void should_return_true_when_diet_recommended() {
 			// given
 			double weight = 89.0;
