@@ -1,11 +1,14 @@
 package com.healthycoderapp;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.function.Executable;
 
 class BMICalculatorTest {
 
+	// test true value
 	@Test
 	void should_return_true_when_diet_recommended() {
 		// given
@@ -26,6 +30,8 @@ class BMICalculatorTest {
 		assertTrue(recommended);
 	}
 
+	// test false value
+
 	@Test
 	void should_return_false_when_diet_recommended() {
 		// given
@@ -37,6 +43,8 @@ class BMICalculatorTest {
 		// then
 		assertFalse(recommended);
 	}
+
+	// test exception
 
 	@Test
 	void should_ThrowExceptionWhenHeight_zero() {
@@ -51,6 +59,7 @@ class BMICalculatorTest {
 
 	}
 
+	// test multiple assert
 	@Test
 	void shouldReturnCoder_With_WorstBMI_WhenListNotempty() {
 
@@ -66,5 +75,43 @@ class BMICalculatorTest {
 		assertAll(() -> assertEquals(1.82, coderwithWorstBMI.getHeight()),
 				() -> assertEquals(98.0, coderwithWorstBMI.getWeight()));
 
+	}
+
+	// test null value
+
+	@Test
+	void shouldReturnNull_Coder_With_WorstBMI() {
+
+		// given
+		List<Coder> coders = new ArrayList<>();// Arrays.asList(new Coder(1.80, 60.0), new Coder(1.82, 98.0), new
+												// Coder(1.82, 64.7));
+
+		// when
+
+		Coder coderwithWorstBMI = BMICalculator.findCoderWithWorstBMI(coders);
+
+		// then
+
+		assertNull(coderwithWorstBMI);
+
+	}
+
+	// test array equality
+	@Test
+	void shouldReturn_CorrectBMI_ScoreArray_WhenListNotempty() {
+
+		// given
+		List<Coder> coders = Arrays.asList(new Coder(1.80, 60.0), new Coder(1.82, 98.0), new Coder(1.82, 64.7));
+
+		// when
+
+		double[] coderwithWorstBMI = BMICalculator.getBMIScores(coders);
+		double[] expected = { 18.52, 29.59, 19.53 };
+
+		// then
+		 //this fails as it checks the location
+		//assertEquals(expected, coderwithWorstBMI);
+		
+		assertArrayEquals(expected, coderwithWorstBMI,0);
 	}
 }
