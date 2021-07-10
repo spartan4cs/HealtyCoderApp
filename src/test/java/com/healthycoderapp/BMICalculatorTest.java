@@ -16,27 +16,30 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class BMICalculatorTest {
 
-	
-	//Run exactly once before all other unit case
-	@BeforeAll 
-	static void beforeAll(){
-		//setting up db 
-		//starting server
+	// Run exactly once before all other unit case
+	@BeforeAll
+	static void beforeAll() {
+		// setting up db
+		// starting server
 		System.out.println("Starting and setting DB");
-		
+
 	}
-	
-	@AfterAll 
-	static void afterAll(){
-		//Close up db 
-		//stop server
+
+	@AfterAll
+	static void afterAll() {
+		// Close up db
+		// stop server
 		System.out.println("Stop DB ans server");
-		
+
 	}
-	
+
 	// test true value
 	@Test
 	void should_return_true_when_diet_recommended() {
@@ -129,9 +132,53 @@ class BMICalculatorTest {
 		double[] expected = { 18.52, 29.59, 19.53 };
 
 		// then
-		 //this fails as it checks the location
-		//assertEquals(expected, coderwithWorstBMI);
-		
-		assertArrayEquals(expected, coderwithWorstBMI,0);
+		// this fails as it checks the location
+		// assertEquals(expected, coderwithWorstBMI);
+
+		assertArrayEquals(expected, coderwithWorstBMI, 0);
+	}
+
+	// tParameterized test case (single value source)
+
+	@ParameterizedTest
+	@ValueSource(doubles = { 89.0, 95.0, 110.0 })
+	void should_return_true_when_diet_recommended(Double coderweight) {
+		// given
+		double weight = coderweight;
+		double height = 1.72;
+
+		// when
+		boolean recommended = BMICalculator.isDietRecommended(weight, height);
+		// then
+		assertTrue(recommended);
+	}
+
+	// twwo value source
+	@ParameterizedTest(name = "weight={0}, height={0}")
+	@CsvSource(value = { "89.0,1.72", "95.0,1.75", "110.0,1.78" })
+	void should_return_true_when_diet_recommended(Double coderweight, Double coderHeight) {
+		// given
+		double weight = coderweight;
+		double height = coderHeight;
+
+		// when
+		boolean recommended = BMICalculator.isDietRecommended(weight, height);
+		// then
+		assertTrue(recommended);
+	}
+
+	// using csv file
+	// twwo value source
+	@ParameterizedTest(name = "weight={0}, height={0}")
+	@CsvFileSource(resources = "/diet-recommended-input-data.csv", numLinesToSkip = 1)
+	void should_return_true_when_diet_recommended_usign_csv(Double coderweight, Double coderHeight) {
+		// given
+		double weight = coderweight;
+		double height = coderHeight;
+
+		// when
+		boolean recommended = BMICalculator.isDietRecommended(weight, height);
+		// then
+		assertTrue(recommended);
 	}
 }
