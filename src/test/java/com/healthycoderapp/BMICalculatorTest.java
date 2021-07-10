@@ -12,11 +12,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 class BMICalculatorTest {
 
+	
+	//Run exactly once before all other unit case
+	@BeforeAll 
+	static void beforeAll(){
+		//setting up db 
+		//starting server
+		System.out.println("Starting and setting DB");
+		
+	}
+	
+	@AfterAll 
+	static void afterAll(){
+		//Close up db 
+		//stop server
+		System.out.println("Stop DB ans server");
+		
+	}
+	
 	// test true value
 	@Test
 	void should_return_true_when_diet_recommended() {
