@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -168,7 +170,7 @@ class BMICalculatorTest {
 	}
 
 	// using csv file
-	// twwo value source
+	// csv file
 	@ParameterizedTest(name = "weight={0}, height={0}")
 	@CsvFileSource(resources = "/diet-recommended-input-data.csv", numLinesToSkip = 1)
 	void should_return_true_when_diet_recommended_usign_csv(Double coderweight, Double coderHeight) {
@@ -180,5 +182,21 @@ class BMICalculatorTest {
 		boolean recommended = BMICalculator.isDietRecommended(weight, height);
 		// then
 		assertTrue(recommended);
+	}
+
+	// test performance should return in 1ms that has 1000 elements
+	@Test
+	void shouldReturn_CorrectBMI_ScoreArray_WhenListNotempty_has_1000element_should_return_in_1_ms() {
+
+		// given
+
+		List<Coder> coders = new ArrayList<>();
+		for (int i = 0; i < 10000; i++) {
+			coders.add(new Coder(1.0 + i, 10.0 + i));
+		}
+		// when
+		Executable executable = () -> BMICalculator.findCoderWithWorstBMI(coders);
+		// then
+		assertTimeout(Duration.ofMillis(50), executable);
 	}
 }

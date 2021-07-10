@@ -24,7 +24,7 @@ class DietPlannerTest {
 	}
 
 	//@Test
-	@RepeatedTest(10)
+	@RepeatedTest(value = 10,name = RepeatedTest.LONG_DISPLAY_NAME)
 	void should_return_correct_dietplanner_when_correct_coder() {
 
 		// given
